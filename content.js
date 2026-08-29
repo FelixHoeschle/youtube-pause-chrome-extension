@@ -23,10 +23,22 @@ function handleNavigation() {
   lastHandledVideoId = videoId;
   teardownBlock();
 
+  // teardownBlock() just unmuted the previous video (if any). Mute the
+  // current video synchronously so there's no audio-leak window while we
+  // wait on the two async storage reads below.
+  const earlyVideo = document.querySelector(
+    "#movie_player video, video.html5-main-video, video"
+  );
+  if (earlyVideo) earlyVideo.muted = true;
+
   chrome.storage.local.get("snoozeUntil", (local) => {
-    if (isSnoozed(local.snoozeUntil, Date.now())) return;
+    if (isSnoozed(local.snoozeUntil, Date.now())) {
+      if (earlyVideo) earlyVideo.muted = false;
+      return;
+    }
     chrome.storage.sync.get("pauseDurationSeconds", (sync) => {
       // The user may have navigated again while storage was loading.
+      // The newer navigation owns the element now; don't unmute it here.
       if (getWatchVideoId(location.href) !== videoId) return;
       startBlock(videoId, clampPauseDuration(sync.pauseDurationSeconds));
     });
@@ -64,7 +76,7 @@ function startBlock(videoId, pauseSeconds) {
   // Attach the overlay to the player container; fail open on timeout.
   pollFor(
     block,
-    () => document.querySelector("#movie_player") || document.querySelector("ytd-player"),
+    () => document.querySelector("#movie_player"),
     POLL_MS,
     POLL_MAX_MS,
     (container) => {
@@ -73,11 +85,29 @@ function startBlock(videoId, pauseSeconds) {
       keepAttached(block, container);
       runCountdown(block, pauseSeconds);
       fillTitle(block);
+
+      // Fail open if YouTube replaces the player container or the video
+      // node while the block is active (keepAttached's re-append handles
+      // the benign transient-detach case first).
+      const watchdog = setInterval(() => {
+        if (activeBlock !== block) {
+          clearInterval(watchdog);
+          return;
+        }
+        const overlayGone = !block.overlay.root.isConnected;
+        const videoGone = block.video && !block.video.isConnected;
+        if (overlayGone || videoGone) {
+          const video = block.video;
+          teardownBlock();
+          if (video && video.isConnected) video.play().catch(() => {});
+        }
+      }, 1000);
+      block.timers.push(watchdog);
     },
     () => {
       const video = activeBlock && activeBlock.video;
       teardownBlock();
-      if (video) video.play();
+      if (video) video.play().catch(() => {});
     }
   );
 }
@@ -138,13 +168,15 @@ function buildOverlay(pauseSeconds) {
 }
 
 function runCountdown(block, pauseSeconds) {
-  let remaining = pauseSeconds;
+  // Wall-clock based so a throttled/hidden background tab (where interval
+  // ticks get stretched) still resolves the countdown correctly.
+  const startedAt = Date.now();
   const timer = setInterval(() => {
     if (activeBlock !== block) {
       clearInterval(timer);
       return;
     }
-    remaining -= 1;
+    const remaining = countdownRemaining(startedAt, Date.now(), pauseSeconds);
     if (remaining > 0) {
       block.overlay.countdownEl.textContent = String(remaining);
       return;
@@ -152,7 +184,7 @@ function runCountdown(block, pauseSeconds) {
     clearInterval(timer);
     block.overlay.countdownEl.classList.add("yt-pause-hidden");
     block.overlay.buttonsEl.classList.remove("yt-pause-hidden");
-  }, 1000);
+  }, 250);
   block.timers.push(timer);
 }
 
@@ -197,7 +229,7 @@ function onWatch() {
   teardownBlock();
   if (video) {
     video.muted = false;
-    video.play();
+    video.play().catch(() => {});
   }
 }
 

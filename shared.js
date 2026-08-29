@@ -27,11 +27,17 @@ function clampPauseDuration(value) {
   return Math.min(MAX_PAUSE_SECONDS, Math.max(MIN_PAUSE_SECONDS, Math.round(value)));
 }
 
+function countdownRemaining(startedAtMs, nowMs, totalSeconds) {
+  const elapsed = Math.floor((nowMs - startedAtMs) / 1000);
+  return Math.max(0, totalSeconds - elapsed);
+}
+
 if (typeof module !== "undefined") {
   module.exports = {
     getWatchVideoId,
     isSnoozed,
     clampPauseDuration,
+    countdownRemaining,
     MIN_PAUSE_SECONDS,
     MAX_PAUSE_SECONDS,
     DEFAULT_PAUSE_SECONDS,

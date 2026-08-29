@@ -103,7 +103,7 @@ test("clampPauseDuration returns default 3 for non-numbers", () => {
 
 - [ ] **Step 2: Run tests to verify they fail**
 
-Run: `node --test test/`
+Run: `node --test`
 Expected: FAIL — `Cannot find module '../shared.js'`
 
 - [ ] **Step 3: Write the implementation**
@@ -154,7 +154,7 @@ if (typeof module !== "undefined") {
 
 - [ ] **Step 4: Run tests to verify they pass**
 
-Run: `node --test test/`
+Run: `node --test`
 Expected: all tests PASS.
 
 - [ ] **Step 5: Commit**
