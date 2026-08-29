@@ -1,0 +1,18 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Pause",
+  "version": "1.0.0",
+  "description": "A moment to think before every YouTube video.",
+  "permissions": ["storage"],
+  "content_scripts": [
+    {
+      "matches": ["https://www.youtube.com/*"],
+      "js": ["shared.js", "content.js"],
+      "css": ["overlay.css"],
+      "run_at": "document_start"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
