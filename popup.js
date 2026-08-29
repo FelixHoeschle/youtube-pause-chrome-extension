@@ -1,14 +1,31 @@
 "use strict";
 
-// isSnoozed and clampPauseDuration are globals from shared.js,
+// isSnoozed, clampPauseDuration and isEnabled are globals from shared.js,
 // loaded by popup.html before this file.
 
+const toggleButton = document.getElementById("toggle");
+const enabledState = document.getElementById("enabled-state");
 const durationInput = document.getElementById("duration");
 const durationValue = document.getElementById("duration-value");
 const snoozeButton = document.getElementById("snooze");
 const snoozeStatus = document.getElementById("snooze-status");
 const snoozeRemaining = document.getElementById("snooze-remaining");
 const resumeButton = document.getElementById("resume");
+
+function renderEnabled() {
+  chrome.storage.sync.get("enabled", (items) => {
+    const on = isEnabled(items.enabled);
+    enabledState.textContent = on ? "On" : "Off";
+    toggleButton.textContent = on ? "Turn off" : "Turn on";
+    toggleButton.classList.toggle("off", !on);
+  });
+}
+
+toggleButton.addEventListener("click", () => {
+  chrome.storage.sync.get("enabled", (items) => {
+    chrome.storage.sync.set({ enabled: !isEnabled(items.enabled) }, renderEnabled);
+  });
+});
 
 chrome.storage.sync.get("pauseDurationSeconds", (items) => {
   const seconds = clampPauseDuration(items.pauseDurationSeconds);
@@ -44,4 +61,5 @@ resumeButton.addEventListener("click", () => {
   chrome.storage.local.remove("snoozeUntil", renderSnooze);
 });
 
+renderEnabled();
 renderSnooze();

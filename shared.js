@@ -32,12 +32,19 @@ function countdownRemaining(startedAtMs, nowMs, totalSeconds) {
   return Math.max(0, totalSeconds - elapsed);
 }
 
+function isEnabled(value) {
+  // Only an explicit stored false disables blocking; absent or garbage
+  // values fail open to enabled.
+  return value !== false;
+}
+
 if (typeof module !== "undefined") {
   module.exports = {
     getWatchVideoId,
     isSnoozed,
     clampPauseDuration,
     countdownRemaining,
+    isEnabled,
     MIN_PAUSE_SECONDS,
     MAX_PAUSE_SECONDS,
     DEFAULT_PAUSE_SECONDS,
