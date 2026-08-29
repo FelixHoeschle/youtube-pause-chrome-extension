@@ -44,3 +44,7 @@ button {
   gap: 8px;
   color: #aaaaaa;
 }
+
+#snooze-status[hidden] {
+  display: none;
+}
