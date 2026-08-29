@@ -16,10 +16,6 @@ function getWatchVideoId(urlString) {
   return url.searchParams.get("v") || null;
 }
 
-function isSnoozed(snoozeUntil, now) {
-  return typeof snoozeUntil === "number" && snoozeUntil > now;
-}
-
 function clampPauseDuration(value) {
   if (typeof value !== "number" || !Number.isFinite(value)) {
     return DEFAULT_PAUSE_SECONDS;
@@ -41,7 +37,6 @@ function isEnabled(value) {
 if (typeof module !== "undefined") {
   module.exports = {
     getWatchVideoId,
-    isSnoozed,
     clampPauseDuration,
     countdownRemaining,
     isEnabled,

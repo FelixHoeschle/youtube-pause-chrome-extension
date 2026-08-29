@@ -2,7 +2,7 @@
 
 const test = require("node:test");
 const assert = require("node:assert/strict");
-const { getWatchVideoId, isSnoozed, clampPauseDuration, countdownRemaining, isEnabled } = require("../shared.js");
+const { getWatchVideoId, clampPauseDuration, countdownRemaining, isEnabled } = require("../shared.js");
 
 test("getWatchVideoId returns the id for a watch URL", () => {
   assert.equal(getWatchVideoId("https://www.youtube.com/watch?v=abc123"), "abc123");
@@ -32,14 +32,6 @@ test("getWatchVideoId returns null for a watch URL without v", () => {
 
 test("getWatchVideoId returns null for garbage input", () => {
   assert.equal(getWatchVideoId("not a url"), null);
-});
-
-test("isSnoozed is true only for a future numeric timestamp", () => {
-  assert.equal(isSnoozed(1000, 999), true);
-  assert.equal(isSnoozed(1000, 1000), false);
-  assert.equal(isSnoozed(999, 1000), false);
-  assert.equal(isSnoozed(undefined, 1000), false);
-  assert.equal(isSnoozed("2000", 1000), false);
 });
 
 test("clampPauseDuration clamps into [3, 10] and rounds", () => {

@@ -42,14 +42,3 @@ button {
   background: #f1f1f1;
   color: #0f0f0f;
 }
-
-#snooze-status {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  color: #aaaaaa;
-}
-
-#snooze-status[hidden] {
-  display: none;
-}

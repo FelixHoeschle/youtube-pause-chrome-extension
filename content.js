@@ -1,8 +1,7 @@
 "use strict";
 
-// getWatchVideoId, isSnoozed, clampPauseDuration, countdownRemaining and
-// isEnabled are globals from shared.js, which the manifest loads before
-// this file.
+// getWatchVideoId, clampPauseDuration, countdownRemaining and isEnabled
+// are globals from shared.js, which the manifest loads before this file.
 
 const POLL_MS = 100;
 const POLL_MAX_MS = 10000;
@@ -26,23 +25,21 @@ function handleNavigation() {
 
   // teardownBlock() just unmuted the previous video (if any). Mute the
   // current video synchronously so there's no audio-leak window while we
-  // wait on the two async storage reads below.
+  // wait on the async storage read below.
   const earlyVideo = document.querySelector(
     "#movie_player video, video.html5-main-video, video"
   );
   if (earlyVideo) earlyVideo.muted = true;
 
-  chrome.storage.local.get("snoozeUntil", (local) => {
-    chrome.storage.sync.get(["enabled", "pauseDurationSeconds"], (sync) => {
-      if (!isEnabled(sync.enabled) || isSnoozed(local.snoozeUntil, Date.now())) {
-        if (earlyVideo) earlyVideo.muted = false;
-        return;
-      }
-      // The user may have navigated again while storage was loading.
-      // The newer navigation owns the element now; don't unmute it here.
-      if (getWatchVideoId(location.href) !== videoId) return;
-      startBlock(videoId, clampPauseDuration(sync.pauseDurationSeconds));
-    });
+  chrome.storage.sync.get(["enabled", "pauseDurationSeconds"], (sync) => {
+    if (!isEnabled(sync.enabled)) {
+      if (earlyVideo) earlyVideo.muted = false;
+      return;
+    }
+    // The user may have navigated again while storage was loading.
+    // The newer navigation owns the element now; don't unmute it here.
+    if (getWatchVideoId(location.href) !== videoId) return;
+    startBlock(videoId, clampPauseDuration(sync.pauseDurationSeconds));
   });
 }
 
