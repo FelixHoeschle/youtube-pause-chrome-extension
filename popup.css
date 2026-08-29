@@ -1,0 +1,46 @@
+body {
+  width: 240px;
+  margin: 0;
+  padding: 16px;
+  font-family: "Roboto", "Arial", sans-serif;
+  font-size: 14px;
+  background: #0f0f0f;
+  color: #f1f1f1;
+}
+
+h1 {
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.setting {
+  margin-bottom: 16px;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #aaaaaa;
+}
+
+input[type="range"] {
+  width: 100%;
+}
+
+button {
+  font-size: 13px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  background: #272727;
+  color: #f1f1f1;
+}
+
+#snooze-status {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #aaaaaa;
+}
