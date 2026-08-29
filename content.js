@@ -34,6 +34,7 @@ function handleNavigation() {
 }
 
 function startBlock(videoId, pauseSeconds) {
+  teardownBlock();
   const block = {
     videoId,
     video: null,
@@ -73,7 +74,11 @@ function startBlock(videoId, pauseSeconds) {
       runCountdown(block, pauseSeconds);
       fillTitle(block);
     },
-    () => teardownBlock()
+    () => {
+      const video = activeBlock && activeBlock.video;
+      teardownBlock();
+      if (video) video.play();
+    }
   );
 }
 
