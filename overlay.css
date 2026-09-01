@@ -1,0 +1,60 @@
+#yt-pause-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  padding: 24px;
+  box-sizing: border-box;
+  background: #0f0f0f;
+  color: #f1f1f1;
+  font-family: "Roboto", "Arial", sans-serif;
+  text-align: center;
+}
+
+.yt-pause-title {
+  font-size: 20px;
+  font-weight: 500;
+  max-width: 80%;
+}
+
+.yt-pause-prompt {
+  font-size: 16px;
+  color: #aaaaaa;
+}
+
+.yt-pause-countdown {
+  font-size: 32px;
+  font-variant-numeric: tabular-nums;
+  color: #717171;
+}
+
+.yt-pause-buttons {
+  display: flex;
+  gap: 16px;
+}
+
+.yt-pause-hidden {
+  display: none;
+}
+
+.yt-pause-button {
+  font-size: 15px;
+  padding: 10px 24px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.yt-pause-go-back {
+  background: #f1f1f1;
+  color: #0f0f0f;
+}
+
+.yt-pause-watch {
+  background: #272727;
+  color: #f1f1f1;
+}
