@@ -31,4 +31,4 @@ If this policy ever changes, the updated version will be published at this same 
 
 ## Contact
 
-Questions? Contact: [removed]
+Questions? Open an issue on this repository.
