@@ -11,7 +11,7 @@ It is a self-control aid for breaking the video-after-video loop, not a parental
 - **Blocks every video** — direct links, search results, sidebar recommendations, and autoplay-next are all caught, including YouTube's SPA navigation.
 - **No audio leak** — the video is muted and paused immediately; spacebar and `k` are re-paused while blocked.
 - **Explicit choice** — the video never resumes on its own. After the pause: **Watch** (unmute + play) or **Go back**.
-- **Configurable pause** — 3–10 seconds (default 3), set from the toolbar popup.
+- **Configurable pause** — 1–60 seconds (default 3), set from the toolbar popup.
 - **On/off toggle** — temporarily disable blocking from the popup for legitimate sessions.
 - **Stateless and private** — no stats, no history, no tracking, no network requests. See [PRIVACY.md](PRIVACY.md).
 - **Fails open** — if YouTube's DOM changes and the extension can't attach, the video simply plays normally rather than breaking YouTube.

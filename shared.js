@@ -1,7 +1,7 @@
 "use strict";
 
-const MIN_PAUSE_SECONDS = 3;
-const MAX_PAUSE_SECONDS = 10;
+const MIN_PAUSE_SECONDS = 1;
+const MAX_PAUSE_SECONDS = 60;
 const DEFAULT_PAUSE_SECONDS = 3;
 
 function getWatchVideoId(urlString) {

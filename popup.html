@@ -7,14 +7,24 @@
   <body>
     <h1>YouTube Pause</h1>
 
-    <div class="setting">
-      <label>Blocking: <span id="enabled-state">On</span></label>
-      <button id="toggle">Turn off</button>
-    </div>
+    <div class="card">
+      <div class="row">
+        <span class="row-label">Block videos</span>
+        <label class="switch">
+          <input type="checkbox" id="toggle" />
+          <span class="switch-track"><span class="switch-knob"></span></span>
+        </label>
+      </div>
 
-    <div class="setting">
-      <label for="duration">Pause duration: <span id="duration-value">3</span>s</label>
-      <input type="range" id="duration" min="3" max="10" step="1" value="3" />
+      <div class="separator"></div>
+
+      <div class="row row-stacked">
+        <div class="row-top">
+          <label class="row-label" for="duration">Pause duration</label>
+          <span class="row-value"><span id="duration-value">3</span>&hairsp;s</span>
+        </div>
+        <input type="range" id="duration" min="1" max="60" step="1" value="3" />
+      </div>
     </div>
 
     <script src="shared.js"></script>

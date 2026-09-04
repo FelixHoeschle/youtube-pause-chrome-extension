@@ -34,11 +34,14 @@ test("getWatchVideoId returns null for garbage input", () => {
   assert.equal(getWatchVideoId("not a url"), null);
 });
 
-test("clampPauseDuration clamps into [3, 10] and rounds", () => {
+test("clampPauseDuration clamps into [1, 60] and rounds", () => {
   assert.equal(clampPauseDuration(5), 5);
   assert.equal(clampPauseDuration(4.6), 5);
-  assert.equal(clampPauseDuration(1), 3);
-  assert.equal(clampPauseDuration(99), 10);
+  assert.equal(clampPauseDuration(1), 1);
+  assert.equal(clampPauseDuration(0), 1);
+  assert.equal(clampPauseDuration(-5), 1);
+  assert.equal(clampPauseDuration(60), 60);
+  assert.equal(clampPauseDuration(99), 60);
 });
 
 test("clampPauseDuration returns default 3 for non-numbers", () => {
